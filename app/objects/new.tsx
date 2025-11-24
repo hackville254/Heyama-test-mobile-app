@@ -1,3 +1,5 @@
+// New object creation screen: form fields, image picker, presigned upload,
+// then POST the object and navigate to its detail.
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, ActivityIndicator } from 'react-native';
 import { Image } from 'expo-image';
@@ -24,6 +26,7 @@ export default function NewObjectScreen() {
   const inputBg = theme === 'dark' ? '#1f2326' : '#ffffff';
   const placeholder = theme === 'dark' ? '#9BA1A6' : '#687076';
 
+  // Open device image picker and store selection
   async function pickImage() {
     const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images });
     if (!res.canceled) {
@@ -32,6 +35,7 @@ export default function NewObjectScreen() {
     }
   }
 
+  // Perform 3-step upload: presign -> PUT binary -> POST object
   async function onSubmit() {
     if (!file) { setError('Sélectionnez une image'); return; }
     setSubmitting(true);

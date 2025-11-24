@@ -1,9 +1,11 @@
+// Object detail screen: loads a single object and displays its image and fields.
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { getObject, Obj } from '@/services/api';
+import { ThemedText } from '@/components/themed-text';
 
 export default function ObjectDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
@@ -22,10 +24,10 @@ export default function ObjectDetailScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ paddingHorizontal: 16, paddingBottom: 16, gap: 8 }}>
-        <Text style={{ fontWeight: '600', fontSize: 18 }}>{item.title}</Text>
-        <Text style={{ color: '#555' }}>{item.description}</Text>
-        <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: 320, borderRadius: 6 }} contentFit="cover" />
-        <Text style={{ color: '#888' }}>{new Date(item.createdAt).toLocaleString()}</Text>
+        <ThemedText type="subtitle" style={{ fontSize: 18 }}>{item.title}</ThemedText>
+        <ThemedText style={{ color: '#555' }}>{item.description}</ThemedText>
+        <Image source={{ uri: item.imageUrl }} style={{ width: '100%', height: 320, borderRadius: 6 }} contentFit="cover" cachePolicy="disk" transition={200} />
+        <ThemedText style={{ color: '#888' }}>{new Date(item.createdAt).toLocaleString()}</ThemedText>
       </View>
     </SafeAreaView>
   );

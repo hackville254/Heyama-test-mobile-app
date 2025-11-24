@@ -1,50 +1,109 @@
-# Welcome to your Expo app 👋
+# HEYAMA Objects — Mobile App (Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Application mobile professionnelle pour créer, lister, consulter et supprimer des « objets » avec upload d'image et mises à jour en temps réel via WebSocket.
 
-## Get started
+## Aperçu
+- Création d'objet avec sélection d'image depuis la galerie et upload vers S3/MinIO via URL présignée
+- Liste avec rafraîchissement, états de chargement/erreur, support mode sombre
+- Détail d'objet avec image optimisée (`expo-image` cache, transition)
+- Temps réel (Socket.IO) pour créations/suppressions; mode manuel si WS indisponible
+- Thème clair/sombre via `useColorScheme` et composants “Themed”
 
-1. Install dependencies
+## Stack Technique
+- React Native + Expo Router
+- `expo-image`, `expo-image-picker`, `expo-file-system`
+- Socket.IO client
+- TypeScript, ESLint
 
-   ```bash
-   npm install
-   ```
+## Prérequis
+- Node.js LTS
+- Expo CLI (`npm install -g expo-cli` facultatif)
+- Un backend compatible:
+  - REST: `GET /objects`, `GET /objects/:id`, `POST /objects`, `DELETE /objects/:id`
+  - Upload: `POST /objects/upload-url` retourne `{ uploadUrl, publicUrl, key }`
+  - Socket.IO namespace `'/objects'` avec events: `objects.created`, `objects.deleted`
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+## Démarrage
 ```bash
-npm run reset-project
+npm install
+npm run start
+# ou
+npm run android
+npm run ios
+npm run web
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Configuration
+- Définir la base API via `EXPO_PUBLIC_API_BASE` (recommandé):
+  - Exemple: `EXPO_PUBLIC_API_BASE=https://votre-backend.example.com`
+- Résolution automatique (fallbacks) dans `services/config.ts:4`:
+  - Dev Expo: dérive l’hôte de `Constants.expoConfig?.hostUri`
+  - Android émulateur: `http://10.0.2.2:3000`
+  - iOS simulateur: `http://localhost:3000`
+  - Un domaine `ngrok` peut être utilisé pour tests externes
 
-## Learn more
+## Flux Upload d’Image
+1. `POST /objects/upload-url` pour obtenir une URL présignée
+2. `PUT` binaire vers `uploadUrl` (`expo-file-system`)
+3. `POST /objects` avec `imageUrl` public
 
-To learn more about developing your project with Expo, look at the following resources:
+Code côté app:
+- `services/api.ts:22` `getUploadUrl`
+- `services/upload.ts:5` `putToS3`
+- `app/objects/new.tsx:38` enchaîne présign → PUT → POST
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Temps Réel (WebSocket)
+- Client Socket.IO sur namespace `'/objects'`
+- Écoute `objects.created` et `objects.deleted`
+- Bannière “Mode manuel” si la connexion échoue; actions “Rafraîchir” et “Réessayer”
 
-## Join the community
+Code côté app:
+- `services/socket.ts:6` client et singleton
+- `app/objects/index.tsx:44` abonnement et fallback manuel
 
-Join our community of developers creating universal apps.
+## Structure du Projet
+```
+app/
+  (tabs)/            # Home/Explore
+  objects/           # Liste, création, détail
+components/          # UI réutilisable (themed, parallax, etc.)
+constants/           # Couleurs, polices
+services/            # API, upload, WebSocket, config
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Scripts
+- `npm run start` — dev server Expo
+- `npm run android` — lancer sur émulateur Android
+- `npm run ios` — lancer sur simulateur iOS
+- `npm run web` — version web
+- `npm run lint` — lint avec ESLint
+
+## Bonnes Pratiques UI/UX
+- Mode sombre pris en charge sur toutes les pages objets
+- Champs avec `returnKeyType="done"` et validation simple
+- `KeyboardAvoidingView` + `ScrollView` pour formulaires longs
+- Images avec `cachePolicy="disk"` et `transition` pour une meilleure perception
+
+## Dépannage
+- Erreur “Network request failed”:
+  - Vérifier `EXPO_PUBLIC_API_BASE`
+  - Android émulateur: utiliser `http://10.0.2.2:3000`
+  - iOS simulateur: utiliser `http://localhost:3000`
+  - Autoriser CORS côté backend
+- WebSocket indisponible:
+  - L’app bascule en “Mode manuel”; utilisez le bouton “Rafraîchir” ou “Réessayer”
+
+## Sécurité
+- Ne jamais committer de secrets
+- Les URLs présignées expirent; générer côté backend
+
+## Licence
+Projet interne HEYAMA (mettre à jour si nécessaire)
+
+---
+
+## English Quickstart
+- Set `EXPO_PUBLIC_API_BASE`
+- Endpoints: `GET/POST/DELETE /objects`, `POST /objects/upload-url`
+- Socket.IO namespace `'/objects'` with `objects.created`/`objects.deleted`
+- Run: `npm install && npm run start`

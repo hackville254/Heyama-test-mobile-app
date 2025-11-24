@@ -27,63 +27,57 @@ export default function TabTwoScreen() {
           style={{
             fontFamily: Fonts.rounded,
           }}>
-          Explore
+          Guide du projet
         </ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
+      <ThemedText>Documentation rapide pour HEYAMA Objects.</ThemedText>
+      <Collapsible title="Navigation par fichiers">
         <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+          Deux onglets principaux: <ThemedText type="defaultSemiBold">Home</ThemedText> et{' '}
+          <ThemedText type="defaultSemiBold">Explore</ThemedText>. Les objets sont dans <ThemedText type="defaultSemiBold">app/objects</ThemedText>.
         </ThemedText>
         <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
+          Le layout <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText> configure la navigation.
         </ThemedText>
         <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link">En savoir plus</ThemedText>
         </ExternalLink>
       </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
+      <Collapsible title="Android, iOS et web">
         <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
+          Ouvrez ce projet sur Android, iOS et le Web. Pour le Web, pressez{' '}
+          <ThemedText type="defaultSemiBold">w</ThemedText> dans le terminal.
         </ThemedText>
       </Collapsible>
       <Collapsible title="Images">
         <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
+          Pour les images statiques, utilisez les suffixes <ThemedText type="defaultSemiBold">@2x</ThemedText> et{' '}
+          <ThemedText type="defaultSemiBold">@3x</ThemedText> pour les différentes densités d’écran.
         </ThemedText>
         <Image
           source={require('@/assets/images/react-logo.png')}
           style={{ width: 100, height: 100, alignSelf: 'center' }}
         />
         <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link">En savoir plus</ThemedText>
         </ExternalLink>
       </Collapsible>
-      <Collapsible title="Light and dark mode components">
+      <Collapsible title="Mode clair/sombre">
         <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
+          Le template supporte les deux modes. Le hook{' '}
+          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> permet d’adapter les couleurs.
         </ThemedText>
         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link">En savoir plus</ThemedText>
         </ExternalLink>
       </Collapsible>
       <Collapsible title="Animations">
         <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
+          Exemple d’animation avec le composant{' '}
+          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> et la librairie{' '}
           <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
             react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
+          </ThemedText>.
         </ThemedText>
         {Platform.select({
           ios: (

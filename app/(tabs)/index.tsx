@@ -18,14 +18,18 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">HEYAMA Objects</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Bienvenue sur Test Heyama</ThemedText>
+        <ThemedText type="subtitle">Gestion d’objets avec upload et temps réel</ThemedText>
         <ThemedText>
-          Ouvrez l’onglet <ThemedText type="defaultSemiBold">Objects</ThemedText> pour tester l’API, l’upload et le temps réel.
+          Créez, importez des images, consultez et supprimez vos objets. Les nouveaux objets
+          apparaissent en temps réel quand la connexion WebSocket est disponible.
         </ThemedText>
+        <Link href="/objects">
+          <ThemedText type="link">Voir la liste des objets →</ThemedText>
+        </Link>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <Link href="/modal">
@@ -52,7 +56,7 @@ export default function HomeScreen() {
         </Link>
 
         <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
+          Consultez l’onglet Explore pour la documentation du projet et les bonnes pratiques.
         </ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>

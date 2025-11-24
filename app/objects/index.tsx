@@ -1,3 +1,5 @@
+// Objects list screen: fetches items over HTTP, displays images, and
+// subscribes to Socket.IO for realtime create/delete events.
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Button, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { Image } from 'expo-image';
@@ -16,6 +18,7 @@ export default function ObjectsListScreen() {
   const socketRef = useRef<Socket | null>(null);
   const router = useRouter();
 
+  // Load objects list from API
   async function initialLoad() {
     setLoading(true);
     setError(null);
@@ -33,6 +36,7 @@ export default function ObjectsListScreen() {
     initialLoad();
   }, []);
 
+  // Setup Socket.IO listeners with manual fallback banner when connection fails
   useEffect(() => {
     let mounted = true;
     let timer: ReturnType<typeof setTimeout> | null = null;
@@ -59,6 +63,7 @@ export default function ObjectsListScreen() {
     };
   }, []);
 
+  // Force a fresh socket connection attempt
   async function retryWebSocket() {
     resetSocket();
     setManualMode(false);
@@ -70,11 +75,13 @@ export default function ObjectsListScreen() {
     s.on('connect_error', () => setManualMode(true));
   }
 
+  // Delete an item and update local state
   async function onDelete(id: string) {
     await deleteObject(id);
     setItems(prev => prev.filter(i => i._id !== id));
   }
 
+  // Pull-to-refresh handler
   async function onRefresh() {
     setRefreshing(true);
     setError(null);
