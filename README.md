@@ -96,14 +96,3 @@ services/            # API, upload, WebSocket, config
 ## Sécurité
 - Ne jamais committer de secrets
 - Les URLs présignées expirent; générer côté backend
-
-## Licence
-Projet interne HEYAMA (mettre à jour si nécessaire)
-
----
-
-## English Quickstart
-- Set `EXPO_PUBLIC_API_BASE`
-- Endpoints: `GET/POST/DELETE /objects`, `POST /objects/upload-url`
-- Socket.IO namespace `'/objects'` with `objects.created`/`objects.deleted`
-- Run: `npm install && npm run start`
